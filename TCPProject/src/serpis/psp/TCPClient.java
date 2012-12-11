@@ -8,9 +8,9 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.Date;
 
-import org.omg.CORBA.portable.InputStream;
+
+
 
 public class TCPClient {
 
@@ -40,9 +40,9 @@ public class TCPClient {
 			BufferedReader	bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
 
 			System.out.print("Mensaje a enviar: ");
-			PrintWriter.println( escribirTeclado.readLine() ); //Enviando mensaje
+			PrintWriter.println( escribirTeclado.readLine() ); 
 
-			mensaje = bufferedReader.readLine();//Leyendo mensaje
+			mensaje = bufferedReader.readLine();
 			System.out.println("Mensaje del servidor: " + mensaje);
 
 
