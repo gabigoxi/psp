@@ -1,6 +1,9 @@
 package serpis.psp;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
@@ -26,11 +29,20 @@ public class TCPServer {
 		
 		Socket socket = serverSocket.accept();
 		
-		Scanner scanner = new Scanner (socket.getInputStream());
+		BufferedReader bufferedReader = new BufferedReader( new InputStreamReader ( socket.getInputStream() ) );
+		PrintWriter printWriter = new PrintWriter ( socket.getOutputStream() );
 		
-		String line = scanner.nextLine();
-		
-		System.out.println("line=" + line);
+		String mensaje = bufferedReader.readLine();
+		System.out.println("Mensaje: " + mensaje);
+		System.out.println("Enviando: "+mensaje.toLowerCase());
+
+		System.out.println("Mensaje enviado.");
+		printWriter.println(mensaje.toLowerCase());
+
+		printWriter.close();
+		bufferedReader.close();
+		socket.close();
+		serverSocket.close();
 
 		socket.close();
 		
@@ -38,10 +50,4 @@ public class TCPServer {
 	
 	}
 	
-	private static void connectAndRead(String[] args) {
-	
-	//private static void holaMundo() throws IOException {
-		
-		
-	//}
 }
