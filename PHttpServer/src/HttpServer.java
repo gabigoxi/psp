@@ -1,5 +1,8 @@
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,7 +12,12 @@ public class HttpServer {
 
 	
 	public static void main(String[] args) throws IOException{
-		int port = 8080;
+		final String newLine = "\r\n";
+		final int port = 8080;
+		final String fileNameError404 = "fileError404.html";
+		final String response200 = "HTTP/1.0 200 OK";
+		final String response404 = "HTTP/1.0 404 NOT FOUND";
+		
 		
 		ServerSocket serverSocket = new ServerSocket(port);
 		
@@ -17,17 +25,49 @@ public class HttpServer {
 		
 		Scanner scanner = new Scanner(socket.getInputStream());
 		
-		while (scanner.hasNextLine()){
+		String fileName = "index.html";
+		
+		while (true){
 			String line = scanner.nextLine();
 			System.out.println(line);
+			if (line.equals(""))
+			break;
 
 	}
+		File file = new File(fileName);
 		
-		PrintWriter printWriter = new PrintWriter (socket.getOutputStream());
-		printWriter.println("HTTP/1.0 404 NOT FOUND");
-		printWriter.println(); 
+		String responseFileName = file.exists() ? fileName : fileNameError404;
+		String response = file.exists() ? response200 : response404;
 		
+		FileInputStream fileInputStream = new FileInputStream(responseFileName);
+		
+		
+		String header = response + newLine + newLine;
+		
+		
+		
+		byte[] headerBuffer = header.getBytes();
+		
+		
+		OutputStream outputStream = socket.getOutputStream();
+		outputStream.write(headerBuffer);
+		
+		final int bufferSize = 2048;
+		
+		byte [] buffer = new byte [bufferSize];
+		
+		int count;
+		while ((count = fileInputStream.read(buffer)) != -1)
+			outputStream.write(buffer, 0, count);
+		
+		//PrintWriter printWriter = new PrintWriter (socket.getOutputStream(),true);
+		//printWriter.println(response + newLine);
+		//printWriter.println(newLine); 
+		
+		//printWriter.close();
 	
+		fileInputStream.close();
+		
 	socket.close();
 	serverSocket.close();
 	
