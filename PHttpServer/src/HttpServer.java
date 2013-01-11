@@ -39,11 +39,8 @@ public class HttpServer {
 		String responseFileName = file.exists() ? fileName : fileNameError404;
 		String response = file.exists() ? response200 : response404;
 		
-		FileInputStream fileInputStream = new FileInputStream(responseFileName);
-		
 		
 		String header = response + newLine + newLine;
-		
 		
 		
 		byte[] headerBuffer = header.getBytes();
@@ -56,15 +53,18 @@ public class HttpServer {
 		
 		byte [] buffer = new byte [bufferSize];
 		
+		FileInputStream fileInputStream = new FileInputStream(responseFileName);
+		
 		int count;
+		//pausa
 		while ((count = fileInputStream.read(buffer)) != -1)
 			outputStream.write(buffer, 0, count);
 		
-		//PrintWriter printWriter = new PrintWriter (socket.getOutputStream(),true);
-		//printWriter.println(response + newLine);
-		//printWriter.println(newLine); 
+		PrintWriter printWriter = new PrintWriter (socket.getOutputStream(),true);
+		printWriter.println(response + newLine);
+		printWriter.println(newLine); 
 		
-		//printWriter.close();
+		printWriter.close();
 	
 		fileInputStream.close();
 		
