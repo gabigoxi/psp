@@ -52,6 +52,10 @@ Scanner scanner = new Scanner(inputStream);
 		while (true){
 			String line = scanner.nextLine();
 			System.out.println(line);
+			if (line.startsWith("GET")) { //GET /index.html HTTP/1.1
+				fileName = line.split("")[1].substring(1); //-> index.html
+			System.out.println("fileName=" + fileName);
+			}
 			if (line.equals(""))
 			break;
 			
